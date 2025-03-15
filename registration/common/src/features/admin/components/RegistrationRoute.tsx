@@ -106,6 +106,7 @@ export const RegistrationRoute = () => {
               label: o.title,
             }))}
             summary={reg.summary}
+            displayData={reg.display_data ?? undefined}
             canComplete={
               reg.registration.status == "pending" &&
               scope.includes(SCOPE.registrationWrite)

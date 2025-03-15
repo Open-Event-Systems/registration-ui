@@ -79,6 +79,7 @@ export const CheckInRegistrationRoute = () => {
       <Stack>
         <RegistrationComponent
           registration={reg.registration}
+          displayData={reg.display_data ?? undefined}
           actions={reg.change_options?.map((o) => ({
             id: o.url,
             label: o.title,
