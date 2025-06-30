@@ -26,33 +26,35 @@
     "@open-event-systems/interview-lib": "workspace:^",
     "clsx": "^2.1.1",
     "markdown-it": "^14.1.0",
-    "mobx": "^6.13.5",
+    "mobx": "^6.13.7",
     "mobx-react-lite": "^4.1.0"
   },
   "devDependencies": {
-    "@mantine/core": "^7.15.1",
-    "@mantine/hooks": "^7.15.1",
-    "@storybook/addon-essentials": "^8.4.7",
-    "@storybook/addon-interactions": "^8.4.7",
-    "@storybook/addon-links": "^8.4.7",
-    "@storybook/addon-webpack5-compiler-swc": "^1.0.5",
-    "@storybook/blocks": "^8.4.7",
-    "@storybook/react": "^8.4.7",
-    "@storybook/react-webpack5": "^8.4.7",
-    "@storybook/test": "^8.4.7",
+    "@mantine/core": "^7.17.8",
+    "@mantine/hooks": "^7.17.8",
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/addon-interactions": "^8.6.14",
+    "@storybook/addon-links": "^8.6.14",
+    "@storybook/addon-webpack5-compiler-swc": "^1.0.6",
+    "@storybook/blocks": "^8.6.14",
+    "@storybook/react": "^8.6.14",
+    "@storybook/react-webpack5": "^8.6.14",
+    "@storybook/test": "^8.6.14",
     "@types/markdown-it": "^14.1.2",
-    "@types/react": "^18.3.18",
+    "@types/react": "^18.3.23",
     "css-loader": "^7.1.2",
     "react": "^18.3.1",
-    "sass": "^1.83.0",
+    "sass": "^1.89.2",
     "sass-loader": "^14.2.1",
-    "storybook": "^8.4.7",
+    "storybook": "^8.6.14",
     "style-loader": "^4.0.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.8.3",
+    "react-dom": "^18.3.1"
   },
   "peerDependencies": {
     "@mantine/core": "^7.15.1",
     "@mantine/hooks": "^7.15.1",
-    "react": "^18.3.1"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }

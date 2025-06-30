@@ -5,7 +5,7 @@ import {
 } from "#src/components/index.js"
 import { Card, NavLink, Space, useProps } from "@mantine/core"
 import { IconMail } from "@tabler/icons-react"
-import { ReactNode } from "@tanstack/react-router"
+import { ReactNode } from "react"
 
 export type SignInMenuProps = Omit<
   FullPageMenuLayoutContentProps,

@@ -20,7 +20,6 @@ export const getRegistrationSearchQueryOptions = (
   RegistrationListResponse,
   Error,
   InfiniteData<RegistrationListResponse>,
-  RegistrationListResponse,
   QueryKey,
   readonly [string, string] | null
 > => {
