@@ -4,7 +4,7 @@ import { createAuthAPI } from "#src/api/authApi.js"
 import { AppContext, AppContextValue } from "#src/app/context.js"
 import { makeRouter } from "#src/app/router.js"
 import { useSetupAuth } from "#src/hooks/auth.js"
-import { InterviewRecordLocalStorage } from "#src/interview/store.js"
+import { InterviewRecordSessionStorage } from "#src/interview/store.js"
 import { Config } from "#src/types.js"
 import { makeInterviewAPI } from "@open-event-systems/interview-lib"
 import {
@@ -66,7 +66,7 @@ const App = ({ config }: { config: Config }) => {
       currentCartStore: new CookieCurrentCartStore(),
       paymentAPI: makePaymentAPI(authWretch),
       interviewAPI: makeInterviewAPI(),
-      interviewStore: InterviewRecordLocalStorage.load(),
+      interviewStore: InterviewRecordSessionStorage.load(),
       selfServiceAPI: makeSelfServiceAPI(authWretch),
       registrationAPI: makeRegistrationAPI(authWretch),
       adminAPI: makeAdminAPI(authWretch),
