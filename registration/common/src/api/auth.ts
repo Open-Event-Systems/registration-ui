@@ -188,7 +188,7 @@ export class AuthStore {
         if (
           res.status != 401 ||
           (!curToken?.refreshToken &&
-            curToken?.accessToken == usedToken?.refreshToken)
+            curToken?.accessToken == usedToken?.accessToken)
         ) {
           // return if successful, or if refresh is not possible
           return res
