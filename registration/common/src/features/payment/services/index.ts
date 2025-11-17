@@ -30,6 +30,10 @@ const paymentComponents: Record<
     const square = await import("./square/Square.js")
     return { Component: square.SquarePaymentComponent }
   },
+  async stripe() {
+    const stripe = await import("./stripe/Stripe.js")
+    return { Component: stripe.StripePaymentComponent }
+  },
 }
 
 /**

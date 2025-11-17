@@ -91,6 +91,7 @@ const CartComponent = ({ eventId }: { eventId: string }) => {
   const paymentMethods = usePaymentMethodsDialog({
     cartId: currentCart.id,
     onShow() {
+      setPaymentId(null)
       disposePaymentId()
       navigate({
         state: {
@@ -99,6 +100,7 @@ const CartComponent = ({ eventId }: { eventId: string }) => {
       })
     },
     onSelect(optionId) {
+      setPaymentId(null)
       disposePaymentId()
       if (!loc.state.cartModal) {
         navigate({

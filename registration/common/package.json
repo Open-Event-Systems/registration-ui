@@ -88,6 +88,7 @@
     "@open-event-systems/interview-lib": "workspace:^",
     "@open-event-systems/registration-lib": "workspace:^",
     "@simplewebauthn/browser": "^10.0.0",
+    "@stripe/stripe-js": "^7.4.0",
     "@tabler/icons-react": "^3.34.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
