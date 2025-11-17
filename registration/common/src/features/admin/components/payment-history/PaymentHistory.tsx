@@ -47,8 +47,8 @@ const PaymentHistoryRow = ({ payment }: { payment: PaymentSearchResult }) => {
       <Table.Td>{payment.service_name}</Table.Td>
       {payment.payment_url ? (
         <Table.Td>
-          <Anchor target={payment.id} href={payment.payment_url}>
-            {payment.id}
+          <Anchor target={payment.external_id} href={payment.payment_url}>
+            {payment.external_id}
           </Anchor>
         </Table.Td>
       ) : (
