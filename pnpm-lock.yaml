@@ -133,8 +133,8 @@ importers:
         specifier: ^29.5.14
         version: 29.5.14
       "@types/psl":
-        specifier: ^1.1.3
-        version: 1.11.0
+        specifier: 1.1.3
+        version: 1.1.3
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@24.10.1)
@@ -2182,12 +2182,11 @@ packages:
         integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==,
       }
 
-  "@types/psl@1.11.0":
+  "@types/psl@1.1.3":
     resolution:
       {
-        integrity: sha512-OeASqmnreaSJyxwljqCZjRIf7jpbwswaqbSPahE99PZrizNAOXEl9HRWhXvCt3fkAc/WuF8wcZ6zkDHXaE7X4g==,
+        integrity: sha512-Iu174JHfLd7i/XkXY6VDrqSlPvTDQOtQI7wNAXKKOAADJ9TduRLkNdMgjGiMxSttUIZnomv81JAbAbC0DhggxA==,
       }
-    deprecated: This is a stub types definition. psl provides its own type definitions, so you do not need this installed.
 
   "@types/qrcode@1.5.6":
     resolution:
@@ -9643,9 +9642,7 @@ snapshots:
 
   "@types/parse-json@4.0.2": {}
 
-  "@types/psl@1.11.0":
-    dependencies:
-      psl: 1.15.0
+  "@types/psl@1.1.3": {}
 
   "@types/qrcode@1.5.6":
     dependencies:
