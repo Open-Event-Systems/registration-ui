@@ -9,6 +9,9 @@
     },
     {
       "path": "../lib"
+    },
+    {
+      "path": "../../dlid-hid-js"
     }
   ],
   "compilerOptions": {

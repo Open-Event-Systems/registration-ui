@@ -3,5 +3,6 @@ packages:
   - input/components
   - interview/lib
   - interview/components
+  - dlid-hid-js
   - registration/lib
   - registration/common

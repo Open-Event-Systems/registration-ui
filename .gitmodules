@@ -1,0 +1,3 @@
+[submodule "dlid-hid-js"]
+	path = dlid-hid-js
+	url = https://github.com/Open-Event-Systems/dlid-hid-js.git
