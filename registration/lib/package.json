@@ -28,16 +28,16 @@
   },
   "devDependencies": {
     "@open-event-systems/interview-lib": "workspace:^",
-    "@tanstack/react-query": "^5.81.5",
-    "@types/react": "^18.3.23",
-    "react": "^18.3.1",
-    "typescript": "^5.8.3",
-    "wretch": "^2.11.0"
+    "@tanstack/react-query": "^5.90.10",
+    "@types/react": "^19.2.6",
+    "react": "^19.2.0",
+    "typescript": "^5.9.3",
+    "wretch": "^2.11.1"
   },
   "peerDependencies": {
     "@open-event-systems/interview-lib": "workspace:^",
     "@tanstack/react-query": "^5.62.8",
-    "react": "^18.3.1",
+    "react": "^19.2.0",
     "wretch": "^2.11.0"
   }
 }
