@@ -31,30 +31,31 @@ export const SquareCardPaymentComponent = ({
       setSubmitting(true)
       try {
         const tokenRes = await card.tokenize()
-        const token = tokenRes.token
-        if (tokenRes.errors && tokenRes.errors.length > 0) {
-          setError(tokenRes.errors[0].message)
+        if (tokenRes.status == "OK") {
+          const verifyRes = await payments.verifyBuyer(tokenRes.token, {
+            amount: payment.body.total_price_str,
+            billingContact: {},
+            currencyCode: payment.body.currency,
+            intent: "CHARGE",
+          })
+
+          await update({
+            source_id: tokenRes.token,
+            verification_token: verifyRes?.token,
+          })
+
           setSubmitting(false)
-          return
-        } else if (!token) {
-          setError("Payment failed")
-          setSubmitting(false)
-          return
+        } else if (tokenRes.status == "Error") {
+          if (tokenRes.errors.length > 0) {
+            setError(tokenRes.errors[0].message)
+            setSubmitting(false)
+            return
+          } else {
+            setError("Payment failed")
+            setSubmitting(false)
+            return
+          }
         }
-
-        const verifyRes = await payments.verifyBuyer(token, {
-          amount: payment.body.total_price_str,
-          billingContact: {},
-          currencyCode: payment.body.currency,
-          intent: "CHARGE",
-        })
-
-        await update({
-          source_id: token,
-          verification_token: verifyRes?.token,
-        })
-
-        setSubmitting(false)
       } catch (e) {
         setError(getErrorMessage(e))
         setSubmitting(false)

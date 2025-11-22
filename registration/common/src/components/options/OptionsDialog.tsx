@@ -18,7 +18,7 @@ export const OptionsDialog = (props: OptionsDialogProps) => {
     ...other
   } = useProps("OptionsDialog", {}, props)
 
-  const prevOptionsRef = useRef<OptionsProps["options"]>()
+  const prevOptionsRef = useRef<OptionsProps["options"]>(undefined)
 
   if (opened && options) {
     prevOptionsRef.current = options
