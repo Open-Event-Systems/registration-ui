@@ -4,7 +4,6 @@ import {
   Box,
   Checkbox,
   Grid,
-  Group,
   Stack,
   Table,
   Text,
@@ -14,7 +13,7 @@ import {
   RegistrationSearchOptions,
   RegistrationStatus,
 } from "@open-event-systems/registration-lib/registration"
-import { IconSearch } from "@tabler/icons-react"
+import { IconBarcode, IconSearch } from "@tabler/icons-react"
 import {
   ComponentPropsWithoutRef,
   createContext,
@@ -67,15 +66,15 @@ export type RegistrationSearchFiltersProps = {
 const RegistrationSearchFilters = (props: RegistrationSearchFiltersProps) => {
   const { onSearch, onEnter } = props
   const firstRef = useRef(true)
-  const queryRef = useRef("")
-  const optsRef = useRef<RegistrationSearchOptions>({})
+  const showAllRef = useRef(false)
   const timerRef = useRef<number | null>(null)
 
-  const [query, setQuery] = useState("")
   const [showAll, setShowAll] = useState(false)
 
-  // const { state, append, setValue } = useDLIDInput()
-  // const { onKeyDown, onKeyUp } = useSpecialCharInput(append)
+  const { state, append, setValue: setQueryValue } = useDLIDInput()
+  const { value: query } = state
+
+  const { onKeyDown, onKeyUp } = useSpecialCharInput(append)
 
   const clearTimeout = useCallback(() => {
     if (timerRef.current != null) {
@@ -106,6 +105,29 @@ const RegistrationSearchFilters = (props: RegistrationSearchFiltersProps) => {
   )
 
   useEffect(() => {
+    if (!firstRef.current) {
+      if (!state.isCapturing) {
+        queueSearch(query, { all: showAllRef.current })
+      }
+    }
+    firstRef.current = false
+  }, [query, state.isCapturing])
+
+  useEffect(() => {
+    if (state.result) {
+      const sf =
+        state.result.subfiles.get("DL") ?? state.result.subfiles.get("ID")
+      if (sf) {
+        const fname = sf.get("DAC")
+        const lname = sf.get("DCS")
+        const val = `${fname} ${lname}`
+        setQueryValue(val)
+        onEnter && onEnter(val, { all: showAllRef.current })
+      }
+    }
+  }, [state.result, setQueryValue, onEnter])
+
+  useEffect(() => {
     return () => {
       clearTimeout()
     }
@@ -116,18 +138,21 @@ const RegistrationSearchFilters = (props: RegistrationSearchFiltersProps) => {
       component="form"
       onSubmit={(e) => {
         e.preventDefault()
+        clearTimeout()
         onEnter && onEnter(query, {})
       }}
     >
       <Grid align="center">
         <Grid.Col span={{ xs: 12, sm: "auto" }}>
           <TextInput
-            leftSection={<IconSearch />}
+            leftSection={state.isParsingDLID ? <IconBarcode /> : <IconSearch />}
+            variant={state.isParsingDLID ? "filled" : "default"}
             autoFocus
             value={query}
+            onKeyDown={state.isCapturing ? onKeyDown : undefined}
+            onKeyUp={state.isCapturing ? onKeyUp : undefined}
             onChange={(e) => {
-              setQuery(e.target.value)
-              queueSearch(e.target.value, { all: showAll })
+              setQueryValue(e.target.value)
             }}
           />
         </Grid.Col>
@@ -138,6 +163,7 @@ const RegistrationSearchFilters = (props: RegistrationSearchFiltersProps) => {
             checked={showAll}
             onChange={(e) => {
               setShowAll(e.target.checked)
+              showAllRef.current = e.target.checked
               doSearch(query, { all: e.target.checked })
             }}
           />
