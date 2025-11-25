@@ -21,8 +21,11 @@ import {
   MouseEvent,
   useCallback,
   useContext,
+  useEffect,
   useRef,
+  useState,
 } from "react"
+import { useDLIDInput, useSpecialCharInput } from "dlid-hid-js"
 
 const SEARCH_INTERVAL = 500
 
@@ -63,26 +66,57 @@ export type RegistrationSearchFiltersProps = {
 
 const RegistrationSearchFilters = (props: RegistrationSearchFiltersProps) => {
   const { onSearch, onEnter } = props
-  const valueRef = useRef("")
+  const firstRef = useRef(true)
+  const queryRef = useRef("")
   const optsRef = useRef<RegistrationSearchOptions>({})
   const timerRef = useRef<number | null>(null)
 
-  const updateSearch = useCallback(() => {
-    onSearch && onSearch(valueRef.current, optsRef.current)
-  }, [onSearch])
+  const [query, setQuery] = useState("")
+  const [showAll, setShowAll] = useState(false)
+
+  // const { state, append, setValue } = useDLIDInput()
+  // const { onKeyDown, onKeyUp } = useSpecialCharInput(append)
+
+  const clearTimeout = useCallback(() => {
+    if (timerRef.current != null) {
+      window.clearTimeout(timerRef.current)
+      timerRef.current = null
+    }
+  }, [])
+
+  const doSearch = useCallback(
+    (query: string, opts: RegistrationSearchOptions) => {
+      clearTimeout()
+      if (onSearch) {
+        onSearch(query, opts)
+      }
+    },
+    [clearTimeout, onSearch],
+  )
+
+  const queueSearch = useCallback(
+    (query: string, opts: RegistrationSearchOptions) => {
+      clearTimeout()
+      timerRef.current = window.setTimeout(
+        () => doSearch(query, opts),
+        SEARCH_INTERVAL,
+      )
+    },
+    [doSearch, clearTimeout],
+  )
+
+  useEffect(() => {
+    return () => {
+      clearTimeout()
+    }
+  }, [doSearch, clearTimeout])
 
   return (
     <Box
       component="form"
       onSubmit={(e) => {
         e.preventDefault()
-        if (valueRef.current) {
-          if (timerRef.current != null) {
-            window.clearTimeout(timerRef.current)
-            timerRef.current = null
-          }
-          onEnter && onEnter(valueRef.current, optsRef.current)
-        }
+        onEnter && onEnter(query, {})
       }}
     >
       <Grid align="center">
@@ -90,14 +124,10 @@ const RegistrationSearchFilters = (props: RegistrationSearchFiltersProps) => {
           <TextInput
             leftSection={<IconSearch />}
             autoFocus
+            value={query}
             onChange={(e) => {
-              valueRef.current = e.target.value
-              if (timerRef.current == null) {
-                timerRef.current = window.setTimeout(() => {
-                  timerRef.current = null
-                  updateSearch()
-                }, SEARCH_INTERVAL)
-              }
+              setQuery(e.target.value)
+              queueSearch(e.target.value, { all: showAll })
             }}
           />
         </Grid.Col>
@@ -105,13 +135,10 @@ const RegistrationSearchFilters = (props: RegistrationSearchFiltersProps) => {
           <Checkbox
             label="Show all"
             tabIndex={-1}
+            checked={showAll}
             onChange={(e) => {
-              optsRef.current.all = e.target.checked
-              if (timerRef.current != null) {
-                window.clearTimeout(timerRef.current)
-                timerRef.current = null
-              }
-              onSearch && onSearch(valueRef.current, optsRef.current)
+              setShowAll(e.target.checked)
+              doSearch(query, { all: e.target.checked })
             }}
           />
         </Grid.Col>
