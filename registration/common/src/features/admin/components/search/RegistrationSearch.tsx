@@ -118,8 +118,8 @@ const RegistrationSearchFilters = (props: RegistrationSearchFiltersProps) => {
       const sf =
         state.result.subfiles.get("DL") ?? state.result.subfiles.get("ID")
       if (sf) {
-        const fname = sf.get("DAC")
-        const lname = sf.get("DCS")
+        const fname = firstSpaceSepField(sf.get("DAC") ?? "")
+        const lname = firstSpaceSepField(sf.get("DCS") ?? "")
         const val = `${fname} ${lname}`
         setQueryValue(val)
         onEnter && onEnter(val, { all: showAllRef.current })
@@ -149,8 +149,8 @@ const RegistrationSearchFilters = (props: RegistrationSearchFiltersProps) => {
             variant={state.isParsingDLID ? "filled" : "default"}
             autoFocus
             value={query}
-            onKeyDown={state.isCapturing ? onKeyDown : undefined}
-            onKeyUp={state.isCapturing ? onKeyUp : undefined}
+            onKeyDown={onKeyDown}
+            onKeyUp={onKeyUp}
             onChange={(e) => {
               setQueryValue(e.target.value)
             }}
@@ -305,4 +305,9 @@ const statusMap: Record<string, string | undefined> = {
   pending: "Pending",
   created: "Created",
   canceled: "Canceled",
+}
+
+const firstSpaceSepField = (s: string): string => {
+  const parts = s.split(" ")
+  return parts[0] ?? ""
 }
