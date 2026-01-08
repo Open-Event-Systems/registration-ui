@@ -109,7 +109,7 @@ const fmtDate = (d: string): string => {
 }
 
 const cartRegToName = (c: CartRegistration): string => {
-  const name = getRegistrationName(c)
+  const name = getRegistrationName(c.new)
   const email = c.new.email
 
   if (name && email) {
