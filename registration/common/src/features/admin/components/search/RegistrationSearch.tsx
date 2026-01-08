@@ -149,7 +149,13 @@ const RegistrationSearchFilters = (props: RegistrationSearchFiltersProps) => {
             variant={state.isParsingDLID ? "filled" : "default"}
             autoFocus
             value={query}
-            onKeyDown={onKeyDown}
+            onKeyDown={(e) => {
+              if (!state.isCapturing && e.key == "Enter") {
+                // allow enter to trigger submit when not capturing input
+              } else {
+                onKeyDown(e)
+              }
+            }}
             onKeyUp={onKeyUp}
             onChange={(e) => {
               setQueryValue(e.target.value)
