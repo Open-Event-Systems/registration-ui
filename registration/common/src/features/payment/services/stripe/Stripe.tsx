@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core"
+import { Button, Text } from "@mantine/core"
 import { PaymentServiceComponentProps } from "#src/features/payment/index.js"
 import {
   PaymentCloseButton,
@@ -14,13 +14,22 @@ import {
 } from "#src/features/payment/services/stripe/stripe.js"
 import { getErrorMessage } from "#src/utils.js"
 
-export type StripePaymentResultBody = {
+export type StripeCheckoutPaymentResultBody = {
+  type?: "checkout" | null
   id: string
   publishable_key: string
   client_secret: string
   amount: number
   currency: string
 }
+
+export type StripeTerminalPaymentResultBody = {
+  type: "terminal"
+}
+
+export type StripePaymentResultBody =
+  | StripeCheckoutPaymentResultBody
+  | StripeTerminalPaymentResultBody
 
 declare module "@open-event-systems/registration-lib/payment" {
   export interface PaymentServiceMap {
@@ -44,16 +53,30 @@ export const StripePaymentComponent = ({
       controls: <PaymentCloseButton />,
     })
   } else if (payment?.status == "pending") {
-    return <PaymentComponent children={children} body={payment.body} />
+    if (payment.body.type == "terminal") {
+      return (
+        <TerminalPaymentComponent body={payment.body}>
+          {children}
+        </TerminalPaymentComponent>
+      )
+    } else if (payment.body.type == "checkout" || !payment.body.type) {
+      return (
+        <CheckoutPaymentComponent body={payment.body}>
+          {children}
+        </CheckoutPaymentComponent>
+      )
+    }
   } else {
-    return <PaymentPlaceholder children={children} />
+    return <PaymentPlaceholder>{children}</PaymentPlaceholder>
   }
 }
 
-const PaymentComponent = ({
+const CheckoutPaymentComponent = ({
   children,
   body,
-}: PaymentServiceComponentProps & { body: StripePaymentResultBody }) => {
+}: PaymentServiceComponentProps & {
+  body: StripeCheckoutPaymentResultBody
+}) => {
   const ctx = usePaymentManagerContext<"stripe">()
   const { update, setError, submitting, setSubmitting } = ctx
 
@@ -90,6 +113,47 @@ const PaymentComponent = ({
       }}
     >
       Pay {total}
+    </Button>
+  )
+
+  return children({
+    content,
+    controls,
+  })
+}
+
+const TerminalPaymentComponent = ({
+  children,
+}: PaymentServiceComponentProps & {
+  body: StripeTerminalPaymentResultBody
+}) => {
+  const ctx = usePaymentManagerContext<"stripe">()
+  const { update, setError, submitting, setSubmitting } = ctx
+
+  const content = (
+    <Text>Take the payment on the reader, then click Complete.</Text>
+  )
+  const controls = (
+    <Button
+      variant="filled"
+      onClick={() => {
+        if (submitting) {
+          return
+        }
+        setSubmitting(true)
+        setError(null)
+
+        update({})
+          .then(() => {
+            setSubmitting(false)
+          })
+          .catch((err) => {
+            setError(getErrorMessage(err))
+            setSubmitting(false)
+          })
+      }}
+    >
+      Complete
     </Button>
   )
 
