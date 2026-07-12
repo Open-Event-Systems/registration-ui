@@ -3,6 +3,7 @@
   "references": [{ "path": "../../input/lib" }],
   "compilerOptions": {
     "rootDir": "./",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "types": ["@types/jest"]
   }
 }
